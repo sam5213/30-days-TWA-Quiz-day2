@@ -1,7 +1,7 @@
 const { Telegraf } = require('telegraf');
 
-YOU_BOT_TOKEN = '7893541535:AAEe0auEczkUbPIbKP2q1jqWlHzkl4_7Eu0'
-const bot = new Telegraf('YOU_BOT_TOKEN');
+
+const bot = new Telegraf(process.env.BOT_TOKEN_DAY1);
 
 const questions = [
   {
@@ -24,7 +24,7 @@ let currentAnswerCount = 0;
 bot.start((ctx) => {
     currentQuestionIndex = 0;
     currentAnswerCount = 0;
-    ctx.reply("Привет! Давай сыграем в квиз. " + questions[currentQuestionIndex].question);
+    ctx.reply("Привет! Давай сыграем в квиз c нескольки вопросами. " + questions[currentQuestionIndex].question);
 });
 
 bot.on('text', (ctx) => {
@@ -35,13 +35,15 @@ bot.on('text', (ctx) => {
         ctx.reply("Правильно! Молодец!");
     } else {
         ctx.reply("Неправильно. Попробуй следующий вопрос!");
+        
     }
 
     currentQuestionIndex++;
+    console.log(`Текущий индекс вопроса: ${currentQuestionIndex}`);
     if (currentQuestionIndex < questions.length) {
-        ctx.replay(questions[currentQuestionIndex].question);
+        ctx.reply(questions[currentQuestionIndex].question);
     } else {
-        ctx.replay("Квиз завершен! Вы ответили правильно на ${currentAnswerCount} вопросов из ${questions.length} вопросов.");
+        ctx.reply(`Квиз завершен! Вы ответили правильно на ${currentAnswerCount} вопросов из ${questions.length} вопросов.`);
         currentQuestionIndex = 0;
     }
 });
